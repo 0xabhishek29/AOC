@@ -21,7 +21,7 @@ def solve():
         n = len(nums)
         return all(1 <= nums[i + 1] - nums[i] <= 3 for i in range(n - 1)) or all(1 <= nums[i] - nums[i + 1] <= 3 for i in range(n - 1))
 
-    res = 0
+    res  = 0
 
     for line in sys.stdin:
         nums = list(map(int, line.split()))
