@@ -21,9 +21,9 @@ def solve():
 
     for s in sys.stdin:
         pat = 'mul\((\d{1,3}),(\d{1,3})\)'
-        matches = re.findall(pat, s)
+        muls = re.findall(pat, s)
 
-        for x, y in matches:
+        for x, y in muls:
             if 1 <= len(x) <= 3 and 1 <= len(y) <= 3:
                 res += int(x) * int(y)
             
