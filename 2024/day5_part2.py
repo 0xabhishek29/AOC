@@ -6,6 +6,14 @@ from heapq import *
 from bisect import *
 
 
+def readIntArr():
+    return list(map(int, input().split()))
+
+
+def readArr():
+    return input().split()
+
+
 def solve():
     N = 1366         # number of lines of input
     page_ordering_rules = []
@@ -25,18 +33,20 @@ def solve():
         else:
             page_updates.append(list(map(int, inp.split(','))))
         
+    g = defaultdict(list)
+    for i, j in page_ordering_rules:
+        g[i].append(j)
 
     res = 0
 
     def get_level(page_update):
         nodes = set(page_update)
-        g = defaultdict(list)
         indeg = defaultdict(int)
 
-        for i, j in page_ordering_rules:
-            if i in nodes and j in nodes:
-                g[i].append(j)
-                indeg[j] += 1
+        for node in nodes:
+            for nei in g[node]:
+                if nei in nodes:
+                    indeg[nei] += 1
         
         q = deque( [node for node in nodes if indeg[node] == 0] )
         level = {}
@@ -49,9 +59,10 @@ def solve():
                 level[cur] = d
 
                 for nei in g[cur]:
-                    indeg[nei] -= 1
-                    if indeg[nei] == 0:
-                        q.append(nei)
+                    if nei in nodes:
+                        indeg[nei] -= 1
+                        if indeg[nei] == 0:
+                            q.append(nei)
         
         return level
     
