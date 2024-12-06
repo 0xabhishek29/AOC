@@ -14,36 +14,26 @@ def solve():
         lab_map.append(input())
 
 
-    def move(x, y, direction):
-        match direction:
-            case 0:
-                x -= 1
-            case 1:
-                y += 1
-            case 2:
-                x += 1
-            case 3:
-                y -= 1
-        
-        return x, y
+    def get_visited_positions(start_x, start_y):
+        curX, curY = start_x, start_y
+        visited = [[0] * m for _ in range(n)]
+        d = 0
+
+        for _ in range(n*m*4):
+            visited[curX][curY] = 1
+            dx, dy = directions[d]
+            nx, ny = curX + dx, curY + dy
+
+            if not (0 <= nx < n and 0 <= ny < m):
+                return visited
+
+            if lab_map[nx][ny] == '#':
+                d = (d + 1) % 4
+            else:
+                curX, curY = nx, ny
 
     n, m = len(lab_map), len(lab_map[0])
-
-    def traverse(start_x, start_y):
-        x, y = start_x, start_y
-        visited = [[0] * m for _ in range(n)]
-        direction = 0
-
-        while 0 <= x < n and 0 <= y < m:
-            visited[x][y] = 1
-            nx, ny = move(x, y, direction)
-
-            if 0 <= nx < n and 0 <= ny < m and lab_map[nx][ny] == '#':
-                direction = (direction + 1) % 4
-            else:
-                x, y = nx, ny
-
-        return visited
+    directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
     for i in range(n):
         for j in range(m):
@@ -51,7 +41,7 @@ def solve():
                 start_x, start_y = i, j
                 break
     
-    visited = traverse(start_x, start_y)
+    visited = get_visited_positions(start_x, start_y)
     return sum(sum(row) for row in visited)
 
 

@@ -13,42 +13,48 @@ def solve():
     for _ in range(N):
         lab_map.append(input())
 
+    
+    def get_visited_positions(start_x, start_y):
+        curX, curY = start_x, start_y
+        visited = [[0] * m for _ in range(n)]
+        d = 0
 
-    def move(x, y, direction):
-        match direction:
-            case 0:
-                x -= 1
-            case 1:
-                y += 1
-            case 2:
-                x += 1
-            case 3:
-                y -= 1
-        
-        return x, y
+        for _ in range(n*m*4):
+            visited[curX][curY] = 1
+            dx, dy = directions[d]
+            nx, ny = curX + dx, curY + dy
 
+            if not (0 <= nx < n and 0 <= ny < m):
+                return visited
+
+            if lab_map[nx][ny] == '#':
+                d = (d + 1) % 4
+            else:
+                curX, curY = nx, ny
+    
+    def can_place_obstacle(obstacle_x, obstacle_y):
+        curX, curY = start_x, start_y
+        seen = set()
+        d = 0
+
+        for _ in range(n*m*4):
+            dx, dy = directions[d]
+            nx, ny = curX + dx, curY + dy
+
+            if not (0 <= nx < n and 0 <= ny < m):
+                return 0
+
+            if lab_map[nx][ny] == '#' or (nx == obstacle_x and ny == obstacle_y):
+                d = (d + 1) % 4
+                if (curX, curY, d) in seen:
+                    return 1
+                seen.add((curX, curY, d))
+            else:
+                curX, curY = nx, ny
+    
     res = 0
     n, m = len(lab_map), len(lab_map[0])
-
-    def traverse(start_x, start_y, obstacle_x = -1, obstacle_y = -1):
-        x, y = start_x, start_y
-        res = [[0] * m for _ in range(n)]
-        seen = set()
-        direction = 0
-
-        while 0 <= x < n and 0 <= y < m:
-            res[x][y] = 1
-            nx, ny = move(x, y, direction)
-
-            if 0 <= nx < n and 0 <= ny < m and (lab_map[nx][ny] == '#' or (nx == obstacle_x and ny == obstacle_y)):
-                direction = (direction + 1) % 4
-                if obstacle_x != -1 and obstacle_y != -1 and (x, y, direction) in seen:
-                    return 1, 0
-                seen.add((x, y, direction))
-            else:
-                x, y = nx, ny
-
-        return 0, res
+    directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
     for i in range(n):
         for j in range(m):
@@ -56,15 +62,14 @@ def solve():
                 start_x, start_y = i, j
                 break
     
-    visited = traverse(start_x, start_y)[1]
+    visited = get_visited_positions(start_x, start_y)
     
     for x in range(n):
         for y in range(m):
-            if visited[x][y] and traverse(start_x, start_y, x, y)[0]:
+            if visited[x][y] and can_place_obstacle(x, y):
                 res += 1
         
     return res
-
 
 print(solve())
 # for _ in range(int(input())):
