@@ -11,11 +11,11 @@ def solve():
     disk_map = input()
 
 
-    def get_result(s, addition):
+    def get_result(s, additional_elements):
         res = []
         
         for i in range(len(s)):
-            for block_id, size in addition[i]:
+            for block_id, size in additional_elements[i]:
                 res += [str(block_id)] * size
 
             block_id, size = s[i]
@@ -36,7 +36,7 @@ def solve():
         else:
             s.append( [-1, int(i)] )
 
-    addition = collections.defaultdict(list)
+    additional_elements = collections.defaultdict(list)
 
     for right in range(len(s) - 1, -1, -2):
         block_id, size = s[right]
@@ -46,11 +46,11 @@ def solve():
 
             if siz >= size:
                 s[left] = [-1, siz - size]
-                addition[left].append( [block_id, size] )
+                additional_elements[left].append( [block_id, size] )
                 s[right] = [-1, size]
                 break
 
-    return get_result(s, addition)
+    return get_result(s, additional_elements)
 
 
 print(solve())
