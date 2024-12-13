@@ -18,6 +18,9 @@ def solve():
 
     
     def solve_linear_equations(ax, ay, bx, by, target_x, target_y):
+        target_x += 10000000000000
+        target_y += 10000000000000
+
         equation1 = [ax, bx, target_x]
         equation2 = [ay, by, target_y]
 
