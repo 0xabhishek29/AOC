@@ -15,26 +15,20 @@ def solve():
     def move(px, py, vx, vy, t):
         return (px + t*vx) % m, (py + t*vy) % n
     
-    grid = [[0] * m for _ in range(n)]
+    upper_left_quadrant = upper_right_quadrant = lower_left_quadrant = lower_right_quadrant = 0
 
     for px, py, vx, vy in positions_and_velocities:
         final_x, final_y = move(px, py, vx, vy, 100)
-        grid[final_y][final_x] += 1
-    
-    upper_left_quadrant = upper_right_quadrant = lower_left_quadrant = lower_right_quadrant = 0
-
-    for i in range(n):
-        for j in range(m):
-            if i < n // 2:
-                if j < m // 2:
-                    upper_left_quadrant += grid[i][j]
-                elif j > m // 2:
-                    upper_right_quadrant += grid[i][j]
-            elif i > n // 2:
-                if j < m // 2:
-                    lower_left_quadrant += grid[i][j]
-                elif j > m // 2:
-                    lower_right_quadrant += grid[i][j]
+        if final_y < n // 2:
+            if final_x < m // 2:
+                upper_left_quadrant += 1
+            elif final_x > m // 2:
+                upper_right_quadrant += 1
+        elif final_y > n // 2:
+            if final_x < m // 2:
+                lower_left_quadrant += 1
+            elif final_x > m // 2:
+                lower_right_quadrant += 1
         
     return upper_left_quadrant * upper_right_quadrant * lower_left_quadrant * lower_right_quadrant
 

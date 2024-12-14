@@ -12,25 +12,20 @@ def solve():
         positions_and_velocities.append([px, py, vx, vy])
 
 
-    def move(ps_and_vs):
-        for i in range(len(ps_and_vs)):
-            px, py, vx, vy = ps_and_vs[i]
-            ps_and_vs[i] = [(px + vx) % m, (py + vy) % n, vx, vy]
+    def move(px, py, vx, vy, t):
+        return (px + t*vx) % m, (py + t*vy) % n
     
-    def find_in_grid(ps_and_vs, to_find):
+    def find_in_grid_after_t(positions_and_velocities, to_find, t):
         grid = [['.'] * m for _ in range(n)]
-
-        for px, py, _, _ in ps_and_vs:
-            grid[py][px] = 'X'
-
-        for i in range(n):
-            grid[i] = ''.join(grid[i])
         
-        return any(to_find in row for row in grid)
+        for px, py, vx, vy in positions_and_velocities:
+            final_x, final_y = move(px, py, vx, vy, t)
+            grid[final_y][final_x] = 'X'
 
-    for t in range(10000):
-        move(positions_and_velocities)
-        if find_in_grid(positions_and_velocities, 'XXXXXXXXX'):
+        return any(to_find in ''.join(row) for row in grid)
+
+    for t in range(n * m):
+        if find_in_grid_after_t(positions_and_velocities, 'XXXXXXXXX', t + 1):
             return t + 1
 
     return -1
