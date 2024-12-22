@@ -21,29 +21,10 @@ def solve(inputs):
 
     nums = inputs
     mod = 16777216
-    seen = collections.defaultdict(int)
-    
-    initial = 0
-    prices = [nums[initial] % 10]
-    diffs = [0]
     iterations = 2000
+    seen = collections.defaultdict(int)
 
-    for i in range(iterations):
-        nums[initial] = next_secret_number(nums[initial])
-        prices.append(nums[initial] % 10)
-        diffs.append(prices[-1] - prices[-2])
-
-        if i >= 3:
-            prices.pop(0)
-            diffs.pop(0)
-            diffs_tuple = tuple(diffs)
-            if diffs_tuple not in seen:
-                seen[diffs_tuple] = prices[-1]
-    
     for idx in range(len(nums)):
-        if idx == initial:
-            continue
-
         local_seen = set()
         prices = [nums[idx] % 10]
         diffs = [0]
