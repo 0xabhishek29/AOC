@@ -13,9 +13,10 @@ def read_input(filename="input.txt"):
 def solve(inputs):
     id_ranges = inputs
 
-    res = set()
+    res = 0
 
     for s, e in id_ranges:
+        hm = set()
         v1, v2 = int(s), int(e)
 
         for mlt in range(2, 11):
@@ -24,11 +25,13 @@ def solve(inputs):
 
             while num <= v2:
                 if v1 <= num <= v2:
-                    res.add(num)
+                    hm.add(num)
                 t += 1
                 num = int(str(t) * mlt)
+        
+        res += sum(hm)
     
-    return sum(res)
+    return res
 
 inputs = read_input()
 print(solve(inputs))
