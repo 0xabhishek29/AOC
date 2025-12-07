@@ -1,6 +1,11 @@
 def read_input(filename="input.txt"):
+    manifold = []
+
     with open(filename, "r") as f:
-        manifold = f.read().split('\n')
+        for idx, i in enumerate(f.read().split('\n')):
+            if idx % 2 == 0:
+                manifold.append(i)
+            idx += 1
     
     return manifold
 
