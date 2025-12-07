@@ -10,7 +10,6 @@ def solve(inputs):
 
     m, n = len(manifold), len(manifold[0])
     s = manifold[0].index('S')
-    res = 0
     hm = set( [s] )
     cnt = [[0] * n for i in range(m)]
     cnt[0][s] = 1
@@ -22,7 +21,6 @@ def solve(inputs):
             val = cnt[i - 1][j]
 
             if manifold[i][j] == '^':
-                res += 1
                 nhm.add(j - 1)
                 cnt[i][j - 1] += val
                 nhm.add(j + 1)
