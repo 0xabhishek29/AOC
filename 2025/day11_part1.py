@@ -21,7 +21,13 @@ def solve(inputs):
     def dfs(cur):
         if cur == 'out':
             return 1
-        return sum(dfs(neighbor) for neighbor in graph[cur])
+        
+        res = 0
+        
+        for kid in graph[cur]:
+            res += dfs(kid)
+        
+        return res
     
     return dfs('you')
 
